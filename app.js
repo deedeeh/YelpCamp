@@ -15,7 +15,7 @@ app.get('/campgrounds', (req, res) => {
     {name: 'Cheglinch Farm Glamping', image: 'https://images.campsites.co.uk/campsite/28020/6d041261-9288-47c0-b463-517d2efaf2a5/840/473/either/beautiful-furnished-lotus-bell.jpg'},
     {name: 'New Beach Holiday Park', image: 'https://images.campsites.co.uk/campsite/22264/86503143-379c-409a-8877-12c8f1b5b6ce/840/473/either/new-beach-holiday-park.jpg'}
   ]
-  res.render('campgrounds');
+  res.render('campgrounds', {camps: campgrounds});
 });
 
 app.listen(3000, console.log('YelpCamp has started!'));
