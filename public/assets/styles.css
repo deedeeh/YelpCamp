@@ -1,3 +1,8 @@
+.campgrounds_container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .camp_image {
-  width: 50%;
+  width: 100%;
 }
