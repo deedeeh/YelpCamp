@@ -2,8 +2,10 @@
 
 <h2>This is the campgrounds page!</h2>
 <% camps.forEach(camp => { %>
-  <h3><%= camp.name %></h3>
-  <img class='camp_image' src='<%= camp.image %>'>
+  <div>
+    <h4><%= camp.name %></h4>
+    <img class='camp_image' src='<%= camp.image %>'>
+  </div>
 <% }) %>
 
 <% include partials/footer %>
