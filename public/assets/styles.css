@@ -8,5 +8,11 @@
 }
 
 .form_width {
-  width: 10%;
+  margin: 25px auto;
+  width: 30%;
+}
+
+.form_heading {
+  margin: 25px 0 0;
+  text-align: center;
 }
