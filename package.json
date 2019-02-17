@@ -8,5 +8,9 @@
     "start": "nodemon app.js"
   },
   "author": "Dina Hafez",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "g": "^2.0.1",
+    "mongoose": "^5.4.13"
+  }
 }
