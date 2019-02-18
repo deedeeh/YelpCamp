@@ -17,27 +17,6 @@ const campgroundSchema = new mongoose.Schema({
 
 const Campground = mongoose.model("Campground", campgroundSchema);
 
-// Campground.create({
-//   name: 'Hendra Holiday Park', 
-//   image:
-//   'https://images.campsites.co.uk/campsite/15273/592ac637-fb1e-4846-b4ac-f70b8ec2ee6c/840/473/either/camping.jpg'
-// }, (err, campground) => {
-//   if(err) {
-//     console.log(err);
-//   } else {
-//     console.log('successfully created campground');
-//     console.log(campground)
-//   }
-// })
-
-
-
-// let campgrounds = [
-//   {name: 'Hendra Holiday Park', image: 'https://images.campsites.co.uk/campsite/15273/592ac637-fb1e-4846-b4ac-f70b8ec2ee6c/840/473/either/camping.jpg'},
-//   {name: 'Cheglinch Farm Glamping', image: 'https://images.campsites.co.uk/campsite/28020/6d041261-9288-47c0-b463-517d2efaf2a5/840/473/either/beautiful-furnished-lotus-bell.jpg'},
-//   {name: 'New Beach Holiday Park', image: 'https://images.campsites.co.uk/campsite/22264/86503143-379c-409a-8877-12c8f1b5b6ce/840/473/either/new-beach-holiday-park.jpg'}
-// ]
-
 app.get('/', (req, res) => {
   res.render('landing');
 });
@@ -49,7 +28,7 @@ app.get('/campgrounds', (req, res) => {
       console.log(err);
     } else {
       console.log('successfully showing data');
-      res.render('campgrounds', {camps: Campgrounds});
+      res.render('campgrounds', {campgrounds: Campgrounds});
     }
   })
 });
@@ -61,8 +40,15 @@ app.get('/campgrounds/new', (req, res) => {
 app.post('/campgrounds', (req, res) => {
   const name = req.body.name;
   const image = req.body.image
-  campgrounds.push({name: name, image: image})
-  res.redirect('/campgrounds')
+  //Create a new campground and save to db
+  Campground.create({name: name, image:image}, (err, newCampground) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(`Successfully created ${name} campground.`)
+      res.redirect('/campgrounds')
+    }
+  })
 });
 
 app.listen(3000, console.log('YelpCamp has started!'));
