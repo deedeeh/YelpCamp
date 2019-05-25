@@ -23,13 +23,13 @@ app.get('/campgrounds', (req, res) => {
       console.log(err);
     } else {
       console.log('successfully showing data');
-      res.render('index', {campgrounds: Campgrounds});
+      res.render('campgrounds/index', {campgrounds: Campgrounds});
     }
   })
 });
 
 app.get('/campgrounds/new', (req, res) => {
-  res.render('new');
+  res.render('campgrounds/new');
 });
 
 app.post('/campgrounds', (req, res) => {
@@ -55,12 +55,22 @@ app.get('/campgrounds/:id', (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      console.log(foundCampground)
       //render show template with that campground
-      res.render('show', {campground: foundCampground});
+      res.render('campgrounds/show', {campground: foundCampground});
     }
   });
 
+})
+
+app.get('/campgrounds/:id/comments/new', (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if(err) {
+      console.log(err)
+    } else {
+      //render new comment form with passed campground data
+      res.render("comments/new", {campground: foundCampground});
+    }
+  })
 })
 
 app.listen(3000, console.log('YelpCamp has started!'));
