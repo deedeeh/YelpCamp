@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');
+const Comment = require('./models/comment');
 const seedDB = require('./seeds')
 
 mongoose.connect("mongodb://localhost/yelp_camp", { useNewUrlParser: true });
@@ -65,12 +66,36 @@ app.get('/campgrounds/:id', (req, res) => {
 app.get('/campgrounds/:id/comments/new', (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
     if(err) {
-      console.log(err)
+      console.log(err);
     } else {
       //render new comment form with passed campground data
       res.render("comments/new", {campground: foundCampground});
     }
   })
 })
+
+app.post('/campgrounds/:id/comments', (req, res) => {
+  //find campground by ID
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if(err) {
+      console.log(err);
+      res.redirect('/campgrounds');
+    } else {
+      const text = req.body.text;
+      const author = req.body.author
+      Comment.create({text: text, author: author}, (err, comment) => {
+        if(err) {
+          console.log(err)
+        } else {
+          foundCampground.comments.push(comment);
+          foundCampground.save();
+          res.redirect(`/campgrounds/${foundCampground._id}`)
+        }
+      })
+    }
+  })
+  //connect the comment with campground
+  //redirect to show campground
+});
 
 app.listen(3000, console.log('YelpCamp has started!'));
