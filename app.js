@@ -5,12 +5,11 @@ const mongoose = require('mongoose');
 const Campground = require('./models/campground');
 const seedDB = require('./seeds')
 
-
-seedDB();
 mongoose.connect("mongodb://localhost/yelp_camp", { useNewUrlParser: true });
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('./public'));
+seedDB();
 
 
 app.get('/', (req, res) => {
@@ -51,17 +50,17 @@ app.post('/campgrounds', (req, res) => {
 
 //show more info about a campground
 app.get('/campgrounds/:id', (req, res) => {
-  //find the campground with given id
-  Campground.findById(req.params.id, (err, foundCampground) => {
+  //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
+  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
     if(err) {
       console.log(err);
     } else {
+      console.log(foundCampground)
       //render show template with that campground
       res.render('show', {campground: foundCampground});
     }
   });
-  
-  
+
 })
 
 app.listen(3000, console.log('YelpCamp has started!'));

@@ -4,6 +4,12 @@
     <h1 class='centered_items'><%= campground.name %></h1>
     <img class='show_image' src='<%= campground.image %>'>
     <p class='show_description'><%= campground.description %></p>
+    <div class='comments'>
+      <h4>Comments</h4>
+      <% campground.comments.forEach(comment => { %>
+        <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+      <% }) %>
+    </div>
   </div>
   <a href='/campgrounds'>Back</a>
 </div>

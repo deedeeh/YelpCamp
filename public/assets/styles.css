@@ -23,7 +23,7 @@
   text-align: center;
 }
 
-.show_wrapper, .show_description {
+.show_wrapper, .show_description, .comments {
   margin: 0 auto;
   width: 80%;
 }
@@ -36,4 +36,8 @@
   margin: 0 auto;
   display: flex;
   width: 80%;
+}
+
+.comments {
+  margin-top: 2em;
 }
