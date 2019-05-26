@@ -43,7 +43,7 @@ app.post('/campgrounds', (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      console.log(`Successfully created ${name} campground.`)
+      console.log(`Successfully created ${newCampground.name} campground.`)
       res.redirect('/campgrounds')
     }
   })
@@ -87,15 +87,15 @@ app.post('/campgrounds/:id/comments', (req, res) => {
         if(err) {
           console.log(err)
         } else {
+          //connect the comment with campground
           foundCampground.comments.push(comment);
           foundCampground.save();
+          //redirect to show campground
           res.redirect(`/campgrounds/${foundCampground._id}`)
         }
       })
     }
   })
-  //connect the comment with campground
-  //redirect to show campground
 });
 
 app.listen(3000, console.log('YelpCamp has started!'));
