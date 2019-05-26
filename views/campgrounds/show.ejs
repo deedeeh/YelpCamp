@@ -10,9 +10,9 @@
       </div>
     </div>
     <div class="col-md-9">
-      <div class="img-thumbnail">
-          <img class='img-responsive' src='<%= campground.image %>'>
-          <div class="caption-full">
+      <div class="img-thumbnail mb-3">
+          <img class="img-responsive camp_image" src='<%= campground.image %>'>
+          <div class="caption px-2">
             <h4 class="float-right">£6.00/night</h4>
             <h4><a href="#"><%= campground.name %></a></h4>
             <p><%= campground.description %></p>
@@ -26,7 +26,7 @@
         <% campground.comments.forEach(comment => { %>
           <div class="row">
             <div class="col-md-12">
-              <%= comment.author %>
+              <strong><%= comment.author %></strong>
               <span class="float-right">10 days ago</span>
               <p><%= comment.text %></p>
             </div>
