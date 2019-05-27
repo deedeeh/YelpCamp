@@ -80,7 +80,15 @@ app.get('/campgrounds/:id', (req, res) => {
 
 })
 
-app.get('/campgrounds/:id/comments/new', (req, res) => {
+//check if user is logged in
+const isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+app.get('/campgrounds/:id/comments/new', isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
     if(err) {
       console.log(err);
@@ -91,7 +99,7 @@ app.get('/campgrounds/:id/comments/new', (req, res) => {
   })
 })
 
-app.post('/campgrounds/:id/comments', (req, res) => {
+app.post('/campgrounds/:id/comments', isLoggedIn, (req, res) => {
   //find campground by ID
   Campground.findById(req.params.id, (err, foundCampground) => {
     if(err) {
@@ -126,8 +134,8 @@ app.post('/register', (req, res) => {
   const newUser = new User({username: req.body.username});
   User.register(newUser, req.body.password, (err, user) => {
     if(err) {
-      console.log(err);
-      return res.render('/register')
+      console.log(err)
+      return res.render('register')
     }
     passport.authenticate('local')(req, res, () => {
       res.redirect('/campgrounds');
@@ -136,7 +144,7 @@ app.post('/register', (req, res) => {
 });
 
 //show login form
-app.get('/login', (req,res) => {
+app.get('/login', (req, res) => {
   res.render('login');
 })
 
@@ -145,7 +153,12 @@ app.post('/login', passport.authenticate('local', {
   successRedirect: '/campgrounds',
   failureRedirect: '/login'
 }), (req, res) => {
-})
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/campgrounds');
+});
 
 
 app.listen(3000, console.log('YelpCamp has started!'));
