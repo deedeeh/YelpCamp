@@ -121,6 +121,7 @@ app.get('/register', (req, res) => {
   res.render('register')
 });
 
+//sign up logic
 app.post('/register', (req, res) => {
   const newUser = new User({username: req.body.username});
   User.register(newUser, req.body.password, (err, user) => {
@@ -133,6 +134,18 @@ app.post('/register', (req, res) => {
     })
   });
 });
+
+//show login form
+app.get('/login', (req,res) => {
+  res.render('login');
+})
+
+//login logic
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/campgrounds',
+  failureRedirect: '/login'
+}), (req, res) => {
+})
 
 
 app.listen(3000, console.log('YelpCamp has started!'));
