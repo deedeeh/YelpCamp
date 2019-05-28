@@ -4,9 +4,7 @@ const express = require('express'),
       mongoose = require('mongoose'),
       passport = require('passport'),
       LocalStrategy = require('passport-local'),
-      passportLocalMongoose = require('passport-local-mongoose');
-
-const Campground = require('./models/campground'),
+      Campground = require('./models/campground'),
       Comment = require('./models/comment'),
       User = require('./models/user'),
       seedDB = require('./seeds');
@@ -28,6 +26,11 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+})
 
 
 app.get('/', (req, res) => {
@@ -93,7 +96,7 @@ app.get('/campgrounds/:id/comments/new', isLoggedIn, (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      //render new comment form with passed campground data
+      //render new comment form with passed campground data and currentUser data
       res.render("comments/new", {campground: foundCampground});
     }
   })
