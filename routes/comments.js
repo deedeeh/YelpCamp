@@ -3,8 +3,7 @@ const express     = require('express'),
       Campground  = require('../models/campground'),
       Comment     = require('../models/comment');
 
-
-//check if user is logged in
+//check if user is logged in - middleware
 const isLoggedIn = (req, res, next) => {
   if(req.isAuthenticated()) {
     return next();
@@ -12,6 +11,7 @@ const isLoggedIn = (req, res, next) => {
   res.redirect('/login');
 }
 
+// NEW
 router.get('/campgrounds/:id/comments/new', isLoggedIn, (req, res) => {
   Campground.findById(req.params.id, (err, foundCampground) => {
     if(err) {
@@ -23,6 +23,7 @@ router.get('/campgrounds/:id/comments/new', isLoggedIn, (req, res) => {
   })
 })
 
+// CREATE
 router.post('/campgrounds/:id/comments', isLoggedIn, (req, res) => {
   //find campground by ID
   Campground.findById(req.params.id, (err, foundCampground) => {

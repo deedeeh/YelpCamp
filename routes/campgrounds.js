@@ -2,6 +2,7 @@ const express     = require('express'),
       router      = express.Router(),
       Campground  = require('../models/campground');
 
+//INDEX
 router.get('/campgrounds', (req, res) => {
   //Get all campgrounds from db
   Campground.find({}, (err, Campgrounds) => {
@@ -14,10 +15,12 @@ router.get('/campgrounds', (req, res) => {
   })
 });
 
+//NEW
 router.get('/campgrounds/new', (req, res) => {
   res.render('campgrounds/new');
 });
 
+//CREATE
 router.post('/campgrounds', (req, res) => {
   const name = req.body.name;
   const image = req.body.image
@@ -34,7 +37,7 @@ router.post('/campgrounds', (req, res) => {
   })
 });
 
-//show more info about a campground
+//SHOW
 router.get('/campgrounds/:id', (req, res) => {
   //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
   Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
@@ -47,7 +50,7 @@ router.get('/campgrounds/:id', (req, res) => {
   });
 });
 
-//check if user is logged in
+//check if user is logged in - middleware
 const isLoggedIn = (req, res, next) => {
   if(req.isAuthenticated()) {
     return next();
