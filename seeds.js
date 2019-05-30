@@ -20,7 +20,7 @@ const data = [
   }
 ]
 
-seedDB = () => {
+const seedDB = () => {
   //Remove all campgrounds
   Campground.deleteMany({}, (err) => {
     if(err) {
