@@ -23,6 +23,19 @@ router.get('/campgrounds', (req, res) => {
   })
 });
 
+//SHOW
+router.get('/campgrounds/:id', (req, res) => {
+  //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
+  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
+    if(err) {
+      console.log(err);
+    } else {
+      //render show template with that campground
+      res.render('campgrounds/show', {campground: foundCampground});
+    }
+  });
+});
+
 //NEW
 router.get('/campgrounds/new', isLoggedIn, (req, res) => {
   res.render('campgrounds/new');
@@ -49,17 +62,32 @@ router.post('/campgrounds', isLoggedIn, (req, res) => {
   })
 });
 
-//SHOW
-router.get('/campgrounds/:id', (req, res) => {
-  //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
-  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
+//Edit
+router.get('/campgrounds/:id/edit', (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
     if(err) {
-      console.log(err);
+      res.redirect('/campgrounds')
     } else {
-      //render show template with that campground
-      res.render('campgrounds/show', {campground: foundCampground});
+      res.render('campgrounds/edit', {campground: foundCampground});
     }
-  });
+  })
 });
+
+//Update
+router.put('/campgrounds/:id', (req, res) => {
+  const campgroundUpdates = {
+    name: req.body.name,
+    image: req.body.image,
+    description: req.body.description
+  }
+  Campground.findOneAndUpdate(req.params.id, campgroundUpdates, (err, updatedCampground) => {
+    if(err) {
+      console.log(err)
+      res.redirect('/campgrounds')
+    } else {
+      res.redirect('/campgrounds/' + req.params.id);
+    }
+  })
+})
 
 module.exports = router;
