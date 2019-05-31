@@ -17,3 +17,7 @@
   padding: 0;
 }
 
+.delete_form {
+  display: inline-block;
+}
+

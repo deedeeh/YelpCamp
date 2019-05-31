@@ -23,19 +23,6 @@ router.get('/campgrounds', (req, res) => {
   })
 });
 
-//SHOW
-router.get('/campgrounds/:id', (req, res) => {
-  //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
-  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
-    if(err) {
-      console.log(err);
-    } else {
-      //render show template with that campground
-      res.render('campgrounds/show', {campground: foundCampground});
-    }
-  });
-});
-
 //NEW
 router.get('/campgrounds/new', isLoggedIn, (req, res) => {
   res.render('campgrounds/new');
@@ -60,6 +47,19 @@ router.post('/campgrounds', isLoggedIn, (req, res) => {
       res.redirect('/campgrounds')
     }
   })
+});
+
+//SHOW
+router.get('/campgrounds/:id', (req, res) => {
+  //find the campground with given id and populate the actual comments for the ampground instead of ObjectId
+  Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
+    if(err) {
+      console.log(err);
+    } else {
+      //render show template with that campground
+      res.render('campgrounds/show', {campground: foundCampground});
+    }
+  });
 });
 
 //Edit
@@ -89,5 +89,17 @@ router.put('/campgrounds/:id', (req, res) => {
     }
   })
 })
+
+//Destroy 
+router.delete('/campgrounds/:id', (req, res) => {
+  Campground.findByIdAndRemove(req.params.id, err => {
+    if(err) {
+      console.log(err)
+      res.redirect('/campgrounds');
+    } else {
+      res.redirect('/campgrounds');
+    }
+  })
+});
 
 module.exports = router;
